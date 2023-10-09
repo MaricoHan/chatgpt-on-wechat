@@ -65,14 +65,17 @@ class ChatChannel(Channel):
                     ]
                 ):
                     group_chat_in_one_session = conf().get("group_chat_in_one_session", [])
-                    session_id = cmsg.actual_user_id
+                    # 群聊中的 会话 id 应该是 "wechat_群聊id_发送者 id"
+                    session_id = "wechat_{}_{}".format(group_id, cmsg.actual_user_id)
+
+                    # 当合并群聊上下文时，会话 id 应该是 "wechat_发送者 id"
                     if any(
                         [
                             group_name in group_chat_in_one_session,
                             "ALL_GROUP" in group_chat_in_one_session,
                         ]
                     ):
-                        session_id = group_id
+                        session_id = "wechat_{}".format(cmsg.actual_user_id)
                 else:
                     return None
                 context["session_id"] = session_id
