@@ -24,6 +24,15 @@ def convert_link_to_format(text):
         2) else f"《{match.group(1)}》:{match.group(2)} ", text)
     return text
 
+def trim_end(text):
+    """
+    截取掉结尾多余的结尾提示信息
+    """
+    key = "----------------------------"
+    ss = text.split(key)
+    if len(ss) < 2:
+        return text
+    return (ss[0] + key + ss[1]).strip().strip("\n")
 
 @plugins.register(
     name="ReplyFormatter",
@@ -45,6 +54,10 @@ class ReplyFormatter(Plugin):
             return
         # 格式化链接
         e_context["reply"].content = convert_link_to_format(e_context["reply"].content)
+
+        # 截取掉多余内容
+        e_context["reply"].content = trim_end(e_context["reply"].content)
+
         # 继续到下一个插件
         e_context.action = EventAction.CONTINUE
         return
