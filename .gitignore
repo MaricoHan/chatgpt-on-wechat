@@ -30,3 +30,5 @@ plugins/banwords/lib/__pycache__
 !plugins/role
 !plugins/keyword
 !plugins/linkai
+# 自定义的插件
+!plugins/reply_formatter
